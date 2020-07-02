@@ -16,15 +16,16 @@ namespace DesignPattern
                 Decimal annualIncome = Convert.ToDecimal(annualIncomeString);
                 Console.WriteLine("Enter card type...");
                 string cardType = Console.ReadLine();
-                AbstractFactoryWithMultipleFactoryMethods abstractFactoryWithMultipleFactoryMethods = new CardFactory();
                 if (cardType.ToLower() == "credit")
                 {
-                    PostPaidCard postPaidCard = abstractFactoryWithMultipleFactoryMethods.GetPostPaidCard(annualIncome);
+                    ICreditCardFactory creditCardFactory = new CreditCardFactory();
+                    PostPaidCard postPaidCard = creditCardFactory.GetPostPaidCard(annualIncome);
                     Console.WriteLine($"{typeof(PostPaidCard)} {postPaidCard.Name} : {annualIncome}");
                 }
                 else if (cardType.ToLower() == "debit")
                 {
-                    PrepaidCard prePaidCard = abstractFactoryWithMultipleFactoryMethods.GetPrePaidCard(annualIncome);
+                    IDebitCardFactory debitCardFactory = new DebitCardFactory();
+                    PrepaidCard prePaidCard = debitCardFactory.GetPrePaidCard(annualIncome);
                     Console.WriteLine($"{typeof(PrepaidCard)} {prePaidCard.Name} : {annualIncome}");
                 }
                 else
@@ -34,14 +35,22 @@ namespace DesignPattern
             }
         }
     }
-    abstract class AbstractFactoryWithMultipleFactoryMethods
+    //public class AbstractFactoryWithMultipleFactoryMethods: ICreditCardFactory, IDebitCardFactory
+    //{
+    //    public abstract PostPaidCard GetPostPaidCard(decimal amount);
+    //    public abstract PrepaidCard GetPrePaidCard(decimal amount);
+    //}
+    public interface ICreditCardFactory
     {
-        internal abstract PostPaidCard GetPostPaidCard(decimal amount);
-        internal abstract PrepaidCard GetPrePaidCard(decimal amount);
+        PostPaidCard GetPostPaidCard(decimal amount);
     }
-    class CardFactory : AbstractFactoryWithMultipleFactoryMethods
+    public interface IDebitCardFactory
     {
-        internal override PostPaidCard GetPostPaidCard(decimal amount)
+        PrepaidCard GetPrePaidCard(decimal amount);
+    }
+    class CreditCardFactory : ICreditCardFactory
+    {
+        public PostPaidCard GetPostPaidCard(decimal amount)
         {
             PostPaidCard postPaidCard = new PostPaidCard();
             if (amount > 50000)
@@ -61,8 +70,10 @@ namespace DesignPattern
             }
             return postPaidCard;
         }
-
-        internal override PrepaidCard GetPrePaidCard(decimal amount)
+    }
+    class DebitCardFactory : IDebitCardFactory
+    {
+        public PrepaidCard GetPrePaidCard(decimal amount)
         {
             PrepaidCard prePaidCard = new PrepaidCard();
             if (amount > 5000)
@@ -79,12 +90,12 @@ namespace DesignPattern
         }
     }
 
-    class Card
+    public class Card
     {
         public string Name { get; set; }
         public string Type { get; set; }
     }
-    class PostPaidCard : Card
+    public class PostPaidCard : Card
     {
         public decimal AnnualFee { get; set; }
         public string Balance { get; set; }
@@ -105,7 +116,7 @@ namespace DesignPattern
     }
 
     //debit cards(prepaid)
-    class PrepaidCard : Card
+    public class PrepaidCard : Card
     {
         public decimal AnnualFee { get; set; }
         public string Balance { get; set; }
