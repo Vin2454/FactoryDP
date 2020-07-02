@@ -84,7 +84,7 @@ namespace DesignPattern
         public string Name { get; set; }
         public string Type { get; set; }
     }
-    class PostPaidCard: Card
+    class PostPaidCard : Card
     {
         public decimal AnnualFee { get; set; }
         public string Balance { get; set; }
@@ -105,11 +105,9 @@ namespace DesignPattern
     }
 
     //debit cards(prepaid)
-    class PrepaidCard: Card
+    class PrepaidCard : Card
     {
-        public string Name { get; set; }
         public decimal AnnualFee { get; set; }
-        public string Type { get; set; }
         public string Balance { get; set; }
     }
     class Icici : PrepaidCard
