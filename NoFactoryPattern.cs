@@ -30,12 +30,14 @@ namespace DesignPattern
             }
         }
     }
-
-    class PostPaidCard
+    class Card
     {
         public string Name { get; set; }
-        public decimal AnnualFee { get; set; }
         public string Type { get; set; }
+    }
+    class PostPaidCard: Card
+    {
+        public decimal AnnualFee { get; set; }
         public string Balance { get; set; }
         public decimal Charge { get; set; }
     }
@@ -51,22 +53,5 @@ namespace DesignPattern
     class Smart : PostPaidCard
     {
 
-    }
-
-    //debit cards(prepaid)
-    class PrepaidCard
-    {
-        public string Name { get; set; }
-        public decimal AnnualFee { get; set; }
-        public string Type { get; set; }
-        public string Balance { get; set; }
-    }
-    class Icici : PrepaidCard
-    {
-
-    }
-    class Hdfc : PrepaidCard
-    {
-        public string Feedback { get; set; }
     }
 }
